@@ -1,51 +1,69 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+const VIBES = [
+  { key: "chill", label: "😌 chill", desc: "편하게 가자" },
+  { key: "hype", label: "🔥 hype", desc: "오늘은 달린다" },
+  { key: "focus", label: "🧠 focus", desc: "집중 모드 ON" },
+];
 
 export default function App() {
   const [mood, setMood] = useState("chill");
-  const vibes = [
-    { key: "chill", label: "😌 chill", desc: "편하게 가자" },
-    { key: "hype", label: "🔥 hype", desc: "오늘은 달린다" },
-    { key: "focus", label: "🧠 focus", desc: "집중 모드 ON" },
-  ];
-  const current = vibes.find((v) => v.key === mood);
+  const current = useMemo(() => VIBES.find((v) => v.key === mood), [mood]);
 
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <div style={styles.badge}>vibe page</div>
-        <h1 style={styles.title}>오늘의 바이브를 고르자</h1>
-        <p style={styles.sub}>버튼 누르면 바로 반응하는 살아있는 웹페이지.</p>
-
-        <div style={styles.row}>
-          {vibes.map((v) => (
-            <button
-              key={v.key}
-              onClick={() => setMood(v.key)}
-              style={{ ...styles.btn, ...(mood === v.key ? styles.btnActive : {}) }}
-            >
-              {v.label}
-            </button>
-          ))}
-        </div>
-
-        <div style={styles.panel}>
-          <div style={styles.panelTitle}>지금 모드</div>
-          <div style={styles.panelValue}>{current.label}</div>
-          <div style={styles.panelDesc}>{current.desc}</div>
-        </div>
-
-        <footer style={styles.footer}>
-          <span>✨ 오늘도 vibe coding</span>
-          <a
-            style={styles.link}
-            href="https://example.com"
-            onClick={(e) => e.preventDefault()}
-          >
-            (링크는 나중에)
-          </a>
-        </footer>
+        <Header />
+        <VibeButtons mood={mood} setMood={setMood} />
+        <Panel current={current} />
+        <Footer />
       </div>
     </div>
+  );
+}
+
+function Header() {
+  return (
+    <>
+      <div style={styles.badge}>vibe page</div>
+      <h1 style={styles.title}>오늘의 바이브를 고르자</h1>
+      <p style={styles.sub}>버튼 누르면 바로 반응하는 살아있는 웹페이지.</p>
+    </>
+  );
+}
+
+function VibeButtons({ mood, setMood }) {
+  return (
+    <div style={styles.row}>
+      {VIBES.map((v) => (
+        <button
+          key={v.key}
+          onClick={() => setMood(v.key)}
+          style={{ ...styles.btn, ...(mood === v.key ? styles.btnActive : {}) }}
+        >
+          {v.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Panel({ current }) {
+  return (
+    <div style={styles.panel}>
+      <div style={styles.panelTitle}>지금 모드</div>
+      <div style={styles.panelValue}>{current.label}</div>
+      <div style={styles.panelDesc}>{current.desc}</div>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={styles.footer}>
+      <span>✨ 오늘도 vibe coding</span>
+      <span style={{ opacity: 0.6 }}>v0.1</span>
+    </footer>
   );
 }
 
@@ -112,5 +130,4 @@ const styles = {
     opacity: 0.7,
     fontSize: 13,
   },
-  link: { color: "#93c5fd", textDecoration: "none" },
 };
