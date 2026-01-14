@@ -61,7 +61,7 @@ function Panel({ current }) {
 function Footer() {
   return (
     <footer style={styles.footer}>
-      <span>✨ 오늘도 vibe coding</span>
+      <span>✨ 자바테스트</span>
       <span style={{ opacity: 0.6 }}>v0.1</span>
     </footer>
   );
